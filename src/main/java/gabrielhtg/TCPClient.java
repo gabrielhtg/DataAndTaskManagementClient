@@ -61,9 +61,11 @@ public class TCPClient {
         System.out.println("Tuliskan \"/exit\" untuk berhenti !!"); 
 
         do { 
+            service.buatGaris(60);
             System.out.print("Input : "); 
             System.out.flush();
             sentence = inFromUser.readLine(); 
+            service.buatGaris(60);
             outToServer.writeBytes(sentence + '\n'); 
             kirimanServer = inFromServer.readLine();
             System.out.println(service.decode(kirimanServer));
