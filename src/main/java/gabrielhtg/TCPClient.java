@@ -35,6 +35,29 @@ public class TCPClient {
             System.out.print("Masukkan username   : ");
             String username = scan.nextLine();
             outToServer.writeBytes(service.encode(username));
+            
+            if (service.decode(inFromServer.readLine()).trim().equals("false")) {
+                service.buatGaris(60);
+                System.out.println("User " + Chalk.on(username).yellow() + Chalk.on(" tidak ditemukan!").red().bold());
+                service.buatGaris(60);
+                System.out.print("Register now? (y/n)    : ");
+                System.out.flush();
+                String persetujuan = scan.nextLine();
+
+                if (persetujuan.toLowerCase().equals("y")) {
+                    System.out.print("Masukkan password baru : ");
+                    System.out.flush();
+                    String newPassword = scan.nextLine();
+                    outToServer.writeBytes(service.encode(newPassword));
+                    service.buatGaris(60);
+
+                    if (service.decode(inFromServer.readLine()).trim().equals("true")) {
+                        System.out.println("Berhasil menambahkan user " + Chalk.on(username).yellow() + " dengan pw " + Chalk.on(newPassword).yellow() + ".");
+                        System.out.flush();
+                    }
+                    // System.out.println(service.decode(inFromServer.readLine()));
+                }
+            }
             // System.out.print("Masukkan password   : ");
             // String password = scan.nextLine();
             service.buatGaris(panjangGaris);
@@ -43,11 +66,9 @@ public class TCPClient {
             service.loadingEcekEcek();
             service.buatGaris(panjangGaris);
 
-            System.out.println( Chalk.on("Berhasil terhubung ke server!!").green().bold()); 
+            System.out.println(Chalk.on("Berhasil terhubung ke server!!").green().bold()); 
             
             service.buatGaris(60);
-            // kirimanServer = inFromServer.readLine(); 
-            // System.out.printf("FROM SERVER: %c %s\n", '\u2713', modifiedSentence ); 
         } catch (SocketTimeoutException exception) { 
             System.out.println("SocketTimeoutException " + ipServer + ":" + 5000 + ". " + exception.getMessage()); 
             System.exit(0); 
@@ -57,14 +78,13 @@ public class TCPClient {
             System.exit(0); 
         } 
  
-        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in)); 
         System.out.println("Tuliskan \"/exit\" untuk berhenti !!"); 
 
         do { 
             service.buatGaris(60);
             System.out.print("Input : "); 
             System.out.flush();
-            sentence = inFromUser.readLine(); 
+            sentence = scan.nextLine(); 
             service.buatGaris(60);
             outToServer.writeBytes(sentence + '\n'); 
             kirimanServer = inFromServer.readLine();

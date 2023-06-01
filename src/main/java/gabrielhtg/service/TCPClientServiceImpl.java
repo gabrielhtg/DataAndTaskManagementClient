@@ -44,12 +44,13 @@ public class TCPClientServiceImpl implements TCPClientService{
     public void loadingEcekEcek() {
         String[] animationFrames = { "|", "/", "-", "\\" };
         int frameIndex = 0;
-        int durationInSeconds = 2;
+        int durationInSeconds = 1;
         
         long startTime = System.currentTimeMillis();
         
         while (true) {
             System.out.print("\rLoading " + animationFrames[frameIndex]);
+            System.out.flush();
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
