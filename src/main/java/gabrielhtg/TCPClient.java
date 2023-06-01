@@ -57,12 +57,12 @@ public class TCPClient {
             System.exit(0); 
         } 
  
-        BufferedReader inFromUser = new BufferedReader(new 
-        InputStreamReader(System.in)); 
+        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in)); 
         System.out.println("Tuliskan \"/exit\" untuk berhenti !!"); 
 
         do { 
-            System.out.print("Input String: "); 
+            System.out.print("Input : "); 
+            System.out.flush();
             sentence = inFromUser.readLine(); 
             outToServer.writeBytes(sentence + '\n'); 
             kirimanServer = inFromServer.readLine();
