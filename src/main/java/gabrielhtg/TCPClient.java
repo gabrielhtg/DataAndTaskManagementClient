@@ -121,6 +121,15 @@ public class TCPClient {
                 continue;
             }
 
+            else if (sentence.split(" ")[0].equals("/remove")) {
+                System.out.print("Masukkan notename : ");
+                System.out.flush();;
+                String notenameRemove = scan.nextLine();
+                outToServer.writeBytes(service.encode(notenameRemove));
+                kirimanServer = inFromServer.readLine();
+                System.out.println(service.decode(kirimanServer));
+            }
+
             service.buatGaris(60);
             outToServer.writeBytes(sentence + '\n'); 
             kirimanServer = inFromServer.readLine();
