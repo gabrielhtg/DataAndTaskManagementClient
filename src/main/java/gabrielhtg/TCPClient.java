@@ -71,6 +71,7 @@ public class TCPClient {
             System.out.println(service.decode(kirimanServer));
         } while(!sentence.toLowerCase().equals("/exit")); 
  
+        service.buatGaris(60);
         clientSocket.close();
         scan.close();
     } 
