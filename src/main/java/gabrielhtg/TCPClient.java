@@ -25,7 +25,6 @@ public class TCPClient {
         // String ipServer = scan.nextLine();
         String ipServer = "192.168.43.200";
         
-        
         SocketAddress socketAddr = new InetSocketAddress(ipServer, 5000);
         
         try{ 
@@ -59,6 +58,7 @@ public class TCPClient {
                     else {
                         System.out.println(Chalk.on("Gagal menambahkan user").red().bold());
                         System.out.flush();
+                        System.exit(0);
                     }
                 }
 
@@ -94,6 +94,23 @@ public class TCPClient {
             System.out.print("Input : "); 
             System.out.flush();
             sentence = scan.nextLine(); 
+
+            if (sentence.split(" ")[0].equals("/save")) {
+                StringBuilder isiNote = new StringBuilder();
+                System.out.print("Masukkan nama note : ");
+                String namaNote = scan.nextLine();
+                System.out.println("Masukkan isi note  : ");
+
+                String temp = null;
+                while (temp.equals("---")) {
+                    temp = scan.nextLine();
+                    isiNote.append(temp + "\n");
+                }
+
+                outToServer.writeBytes(service.encode(namaNote));
+                outToServer.writeBytes(service.encode(isiNote.toString()));
+            }
+
             service.buatGaris(60);
             outToServer.writeBytes(sentence + '\n'); 
             kirimanServer = inFromServer.readLine();
