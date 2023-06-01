@@ -67,6 +67,22 @@ public class TCPClient {
                     System.exit(0);
                 }
             }
+
+            else {
+                while (true) {
+                    System.out.print("Masukkan password   : ");
+                    String password = scan.nextLine();
+                    outToServer.writeBytes(service.encode(password));
+    
+                    if (service.decode(inFromServer.readLine()).equals("false")) { // kredensial tidak tepat
+                        continue;
+                    }
+
+                    else {
+                        break;
+                    }
+                }
+            }
             // System.out.print("Masukkan password   : ");
             // String password = scan.nextLine();
             service.buatGaris(panjangGaris);
