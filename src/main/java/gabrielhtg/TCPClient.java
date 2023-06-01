@@ -55,7 +55,10 @@ public class TCPClient {
                         System.out.println("Berhasil menambahkan user " + Chalk.on(username).yellow() + " dengan pw " + Chalk.on(newPassword).yellow() + ".");
                         System.out.flush();
                     }
-                    // System.out.println(service.decode(inFromServer.readLine()));
+
+                    else {
+                        System.out.println(Chalk.on("Gagal menambahkan user").red().bold());
+                    }
                 }
 
                 else {
