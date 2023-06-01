@@ -96,7 +96,7 @@ public class TCPClient {
             System.out.flush();
             sentence = scan.nextLine(); 
 
-            if (sentence.split(" ")[0].equals("/save")) {
+            if (sentence.equals("/save")) {
                 service.buatGaris(60);
                 StringBuilder isiNote = new StringBuilder();
                 System.out.print("Masukkan nama note : ");
@@ -121,13 +121,14 @@ public class TCPClient {
                 continue;
             }
 
-            else if (sentence.split(" ")[0].equals("/remove")) {
+            else if (sentence.equals("/remove")) {
                 service.buatGaris(60);
                 System.out.print("Masukkan notename : ");
-                System.out.flush();;
+                System.out.flush();
                 String notenameRemove = scan.nextLine();
-                outToServer.writeBytes(service.encode(notenameRemove));
-                kirimanServer = inFromServer.readLine();
+                outToServer.writeBytes(sentence + '\n'); 
+                outToServer.writeBytes(service.encode(notenameRemove)); // mengirim notename ke server
+                kirimanServer = inFromServer.readLine(); // menerima kiriman server
                 service.buatGaris(60);
                 System.out.println(service.decode(kirimanServer));
                 continue;
