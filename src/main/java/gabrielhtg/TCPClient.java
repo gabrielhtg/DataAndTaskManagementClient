@@ -58,6 +58,7 @@ public class TCPClient {
 
                     else {
                         System.out.println(Chalk.on("Gagal menambahkan user").red().bold());
+                        System.out.flush();
                     }
                 }
 
