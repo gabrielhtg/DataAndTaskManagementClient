@@ -57,6 +57,11 @@ public class TCPClient {
                     }
                     // System.out.println(service.decode(inFromServer.readLine()));
                 }
+
+                else {
+                    service.buatGaris(60);
+                    System.exit(0);
+                }
             }
             // System.out.print("Masukkan password   : ");
             // String password = scan.nextLine();
