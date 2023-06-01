@@ -91,24 +91,34 @@ public class TCPClient {
 
         do { 
             service.buatGaris(60);
-            System.out.print("Input : "); 
+            System.out.print("Input : ");
+             
             System.out.flush();
             sentence = scan.nextLine(); 
 
             if (sentence.split(" ")[0].equals("/save")) {
+                service.buatGaris(60);
                 StringBuilder isiNote = new StringBuilder();
                 System.out.print("Masukkan nama note : ");
+                System.out.flush();
                 String namaNote = scan.nextLine();
+                System.out.flush();
+                service.buatGaris(60);
                 System.out.println("Masukkan isi note  : ");
 
-                String temp = null;
-                while (temp.equals("---")) {
+                String temp = "";
+                while (!temp.equals("---")) {
                     temp = scan.nextLine();
                     isiNote.append(temp + "\n");
                 }
 
+                outToServer.writeBytes(sentence + '\n'); 
                 outToServer.writeBytes(service.encode(namaNote));
                 outToServer.writeBytes(service.encode(isiNote.toString()));
+                kirimanServer = inFromServer.readLine();
+                service.buatGaris(60);
+                System.out.println(service.decode(kirimanServer));
+                continue;
             }
 
             service.buatGaris(60);
