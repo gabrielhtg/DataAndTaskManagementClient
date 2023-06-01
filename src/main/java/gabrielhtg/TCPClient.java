@@ -21,9 +21,9 @@ public class TCPClient {
         int panjangGaris = 60;
 
         service.buatGaris(panjangGaris);
-        // System.out.print("Masukkan IP Server  : ");
-        // String ipServer = scan.nextLine();
-        String ipServer = "192.168.43.200";
+        System.out.print("Masukkan IP Server  : ");
+        String ipServer = scan.nextLine();
+        // String ipServer = "192.168.43.200";
         
         SocketAddress socketAddr = new InetSocketAddress(ipServer, 5000);
         
