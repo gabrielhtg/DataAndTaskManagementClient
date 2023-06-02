@@ -63,6 +63,8 @@ public class TCPClient {
 
                     if (service.decode(inFromServer.readLine()).trim().equals("true")) {
                         System.out.println("Berhasil menambahkan user " + Chalk.on(username).yellow() + " dengan pw " + Chalk.on(passwordSatu).yellow() + ".");
+                        System.out.println("Pesan ini akan hilang dalam 1 detik");
+                        service.loadingEcekEcek(1);
                         System.out.flush();
                     }
 
@@ -88,6 +90,7 @@ public class TCPClient {
                     }
 
                     else {
+                        TCPClientService.clearScreen();
                         break;
                     }
                 }
@@ -97,7 +100,7 @@ public class TCPClient {
             service.buatGaris(panjangGaris);
             System.out.println("Connecting to server on IP: " +  ipServer + " on PORT: " + 5000); 
             
-            service.loadingEcekEcek();
+            service.loadingEcekEcek(1);
             service.buatGaris(panjangGaris);
 
             System.out.println(Chalk.on("Berhasil terhubung ke server!!").green().bold()); 
@@ -156,6 +159,22 @@ public class TCPClient {
                 kirimanServer = inFromServer.readLine(); // menerima kiriman server
                 service.buatGaris(panjangGaris);
                 System.out.println(service.decode(kirimanServer));
+                continue;
+            }
+
+            else if (sentence.equals("/send")) {
+                service.buatGaris(panjangGaris);
+                System.out.print("Masukkan path     : ");
+                System.out.flush();
+                String path = scan.nextLine();
+                outToServer.writeBytes(sentence + '\n');
+                int length = path.split("\\\\").length;
+                outToServer.writeBytes(service.encode(path.split("\\\\")[length - 1])); 
+                service.kirimFile(path, clientSocket);
+                // outToServer.writeBytes(service.encode(path)); // mengirim path ke server
+                // kirimanServer = inFromServer.readLine(); // menerima kiriman server
+                service.buatGaris(panjangGaris);
+                // System.out.println(service.decode(kirimanServer));
                 continue;
             }
 

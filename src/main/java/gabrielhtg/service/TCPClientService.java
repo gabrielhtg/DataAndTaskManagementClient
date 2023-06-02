@@ -1,7 +1,10 @@
 package gabrielhtg.service;
 
 import java.io.Console;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.Base64;
 
 public class TCPClientService{
@@ -37,10 +40,10 @@ public class TCPClientService{
         System.out.println("-------------------------------------------");
     }
 
-    public void loadingEcekEcek() {
+    public void loadingEcekEcek(int n) {
         String[] animationFrames = { "|", "/", "-", "\\" };
         int frameIndex = 0;
-        int durationInSeconds = 1;
+        int durationInSeconds = n;
         
         long startTime = System.currentTimeMillis();
         
@@ -83,5 +86,25 @@ public class TCPClientService{
         java.util.Arrays.fill(passwordArray, ' ');
 
         return password;
+    }
+
+    public void kirimFile (String filePath, Socket socket) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            OutputStream outputStream = socket.getOutputStream();
+            // Baca file menjadi byte array
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                // Kirim byte array ke sisi penerima
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            outputStream.flush();
+            System.out.println("File berhasil dikirim");
+            fileInputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
