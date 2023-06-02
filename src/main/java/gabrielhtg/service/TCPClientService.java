@@ -93,7 +93,7 @@ public class TCPClientService{
             FileInputStream fileInputStream = new FileInputStream(filePath);
             OutputStream outputStream = socket.getOutputStream();
             // Baca file menjadi byte array
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[8192];
             int bytesRead;
             while ((bytesRead = fileInputStream.read(buffer)) != -1) {
                 // Kirim byte array ke sisi penerima

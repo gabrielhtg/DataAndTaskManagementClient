@@ -65,6 +65,7 @@ public class TCPClient {
                         System.out.println("Berhasil menambahkan user " + Chalk.on(username).yellow() + " dengan pw " + Chalk.on(passwordSatu).yellow() + ".");
                         System.out.println("Pesan ini akan hilang dalam 1 detik");
                         service.loadingEcekEcek(1);
+                        TCPClientService.clearScreen();
                         System.out.flush();
                     }
 
