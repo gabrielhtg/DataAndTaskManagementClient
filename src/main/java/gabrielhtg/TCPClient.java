@@ -171,7 +171,17 @@ public class TCPClient {
                 outToServer.writeBytes(sentence + '\n');
                 int length = path.split("\\\\").length;
                 outToServer.writeBytes(service.encode(path.split("\\\\")[length - 1])); 
-                service.kirimFile(ipServer, path);
+                // Membuat objek Thread dan menyediakan method yang akan dijalankan
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Kode yang ingin dijalankan di thread baru
+                        service.kirimFile(ipServer, path, clientSocket);
+                    }
+                });
+
+                // Memulai eksekusi thread
+                thread.start();
                 // outToServer.writeBytes(service.encode(path)); // mengirim path ke server
                 // kirimanServer = inFromServer.readLine(); // menerima kiriman server
                 service.buatGaris(panjangGaris);
