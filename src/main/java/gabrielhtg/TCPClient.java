@@ -193,7 +193,7 @@ public class TCPClient {
                     }
 
                     else {
-                        TCPClientService.clearScreen();
+                        TCPClientService.clearScreen(); 
                     }
                 }
 
