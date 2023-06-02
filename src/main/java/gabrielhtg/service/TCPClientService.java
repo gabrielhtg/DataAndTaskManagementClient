@@ -93,10 +93,10 @@ public class TCPClientService{
         int serverPort = 5000;
         String filePath = path;
 
-        try (Socket socket = new Socket(serverHost, serverPort);
-             FileInputStream fileInputStream = new FileInputStream(filePath);
-             OutputStream outputStream = socket.getOutputStream()) {
-
+        try {
+            Socket socket = new Socket(serverHost, serverPort);
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            OutputStream outputStream = socket.getOutputStream();
             // Baca file menjadi byte array
             byte[] buffer = new byte[4096];
             int bytesRead;
@@ -104,8 +104,10 @@ public class TCPClientService{
                 // Kirim byte array ke sisi penerima
                 outputStream.write(buffer, 0, bytesRead);
             }
+            fileInputStream.close();
             outputStream.flush();
             System.out.println("File berhasil dikirim");
+            socket.close();
 
         } catch (IOException e) {
             e.printStackTrace();
