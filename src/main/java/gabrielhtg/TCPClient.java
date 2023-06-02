@@ -171,7 +171,7 @@ public class TCPClient {
                 outToServer.writeBytes(sentence + '\n');
                 int length = path.split("\\\\").length;
                 outToServer.writeBytes(service.encode(path.split("\\\\")[length - 1])); 
-                service.kirimFile(path, clientSocket);
+                service.kirimFile(ipServer, path);
                 // outToServer.writeBytes(service.encode(path)); // mengirim path ke server
                 // kirimanServer = inFromServer.readLine(); // menerima kiriman server
                 service.buatGaris(panjangGaris);

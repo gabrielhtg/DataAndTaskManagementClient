@@ -88,12 +88,17 @@ public class TCPClientService{
         return password;
     }
 
-    public void kirimFile (String filePath, Socket socket) {
-        try {
-            FileInputStream fileInputStream = new FileInputStream(filePath);
-            OutputStream outputStream = socket.getOutputStream();
+    public void kirimFile (String ip, String path) {
+        String serverHost = ip;
+        int serverPort = 5000;
+        String filePath = path;
+
+        try (Socket socket = new Socket(serverHost, serverPort);
+             FileInputStream fileInputStream = new FileInputStream(filePath);
+             OutputStream outputStream = socket.getOutputStream()) {
+
             // Baca file menjadi byte array
-            byte[] buffer = new byte[8192];
+            byte[] buffer = new byte[4096];
             int bytesRead;
             while ((bytesRead = fileInputStream.read(buffer)) != -1) {
                 // Kirim byte array ke sisi penerima
@@ -101,8 +106,6 @@ public class TCPClientService{
             }
             outputStream.flush();
             System.out.println("File berhasil dikirim");
-            fileInputStream.close();
-            socket.close();
 
         } catch (IOException e) {
             e.printStackTrace();
