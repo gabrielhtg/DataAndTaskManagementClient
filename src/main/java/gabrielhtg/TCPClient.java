@@ -5,20 +5,19 @@ import java.util.Scanner;
 
 import com.github.tomaslanger.chalk.Chalk;
 
-import gabrielhtg.service.TCPClientService;
-import gabrielhtg.service.TCPClientServiceImpl; 
+import gabrielhtg.service.TCPClientService; 
  
 public class TCPClient { 
     public static void main(String argv[]) throws Exception { 
         String sentence; 
         String kirimanServer;
-        TCPClientServiceImpl.clearScreen();
-        TCPClientService service = new TCPClientServiceImpl();
+        TCPClientService.clearScreen();
+        TCPClientService service = new TCPClientService();
         Scanner scan = new Scanner(System.in);
         Socket clientSocket = new Socket(); 
         DataOutputStream outToServer = null; 
         BufferedReader inFromServer = null; 
-        int panjangGaris = 60;
+        int panjangGaris = 80;
 
         service.buatGaris(panjangGaris);
         System.out.print("Masukkan IP Server  : ");
@@ -36,29 +35,34 @@ public class TCPClient {
             outToServer.writeBytes(service.encode(username));
             
             if (service.decode(inFromServer.readLine()).trim().equals("false")) {
-                service.buatGaris(60);
+                service.buatGaris(panjangGaris);
                 System.out.println("User " + Chalk.on(username).yellow() + Chalk.on(" tidak ditemukan!").red().bold());
-                service.buatGaris(60);
+                service.buatGaris(panjangGaris);
                 System.out.print("Register now? (y/n)    : ");
                 System.out.flush();
                 String persetujuan = scan.nextLine();
 
                 if (persetujuan.toLowerCase().equals("y")) {
-                    Console console = System.console();
-                    if (console == null) {
-                        System.out.println("Tidak dapat mengambil konsol. Jalankan program di luar IDE.");
-                        System.exit(1);
-                    }
+                    String passwordSatu = "";
+                    while (true) {
+                        passwordSatu = service.mintaPw("Masukkan password baru : ");
+                        String passwordDua = service.mintaPw("Masukkan password lagi : ");
+                        
+                        if (passwordSatu.equals(passwordDua)) {
+                            outToServer.writeBytes(service.encode(passwordSatu));
+                            break;
+                        }
 
-                    char[] passwordArray = console.readPassword("Masukkan password baru : ");
-                    String newPassword = new String(passwordArray);
-                    java.util.Arrays.fill(passwordArray, ' ');
-                    System.out.flush();
-                    outToServer.writeBytes(service.encode(newPassword));
-                    service.buatGaris(60);
+                        else {
+                            service.buatGaris(panjangGaris);
+                            System.out.println(Chalk.on("Password tidak sama. Coba lagi!").red().bold());
+                            service.buatGaris(panjangGaris);
+                        }
+                    }
+                    service.buatGaris(panjangGaris);
 
                     if (service.decode(inFromServer.readLine()).trim().equals("true")) {
-                        System.out.println("Berhasil menambahkan user " + Chalk.on(username).yellow() + " dengan pw " + Chalk.on(newPassword).yellow() + ".");
+                        System.out.println("Berhasil menambahkan user " + Chalk.on(username).yellow() + " dengan pw " + Chalk.on(passwordSatu).yellow() + ".");
                         System.out.flush();
                     }
 
@@ -70,16 +74,14 @@ public class TCPClient {
                 }
 
                 else {
-                    service.buatGaris(60);
+                    service.buatGaris(panjangGaris);
                     System.exit(0);
                 }
             }
 
             else {
                 while (true) {
-                    System.out.print("Masukkan password   : ");
-                    String password = scan.nextLine();
-                    outToServer.writeBytes(service.encode(password));
+                    outToServer.writeBytes(service.encode(service.mintaPw("Masukkan password   : ")));
     
                     if (service.decode(inFromServer.readLine()).equals("false")) { // kredensial tidak tepat
                         continue;
@@ -100,7 +102,7 @@ public class TCPClient {
 
             System.out.println(Chalk.on("Berhasil terhubung ke server!!").green().bold()); 
             
-            service.buatGaris(60);
+            service.buatGaris(panjangGaris);
         } catch (SocketTimeoutException exception) { 
             System.out.println("SocketTimeoutException " + ipServer + ":" + 5000 + ". " + exception.getMessage()); 
             System.exit(0); 
@@ -113,20 +115,20 @@ public class TCPClient {
         System.out.println("Tuliskan \"/exit\" untuk berhenti !!"); 
 
         do { 
-            service.buatGaris(60);
+            service.buatGaris(panjangGaris);
             System.out.print("Input : ");
              
             System.out.flush();
             sentence = scan.nextLine(); 
 
             if (sentence.equals("/save")) {
-                service.buatGaris(60);
+                service.buatGaris(panjangGaris);
                 StringBuilder isiNote = new StringBuilder();
                 System.out.print("Masukkan nama note : ");
                 System.out.flush();
                 String namaNote = scan.nextLine();
                 System.out.flush();
-                service.buatGaris(60);
+                service.buatGaris(panjangGaris);
                 System.out.println("Masukkan isi note  : ");
 
                 String temp = "";
@@ -139,31 +141,31 @@ public class TCPClient {
                 outToServer.writeBytes(service.encode(namaNote));
                 outToServer.writeBytes(service.encode(isiNote.toString()));
                 kirimanServer = inFromServer.readLine();
-                service.buatGaris(60);
+                service.buatGaris(panjangGaris);
                 System.out.println(service.decode(kirimanServer));
                 continue;
             }
 
             else if (sentence.equals("/remove")) {
-                service.buatGaris(60);
+                service.buatGaris(panjangGaris);
                 System.out.print("Masukkan notename : ");
                 System.out.flush();
                 String notenameRemove = scan.nextLine();
                 outToServer.writeBytes(sentence + '\n'); 
                 outToServer.writeBytes(service.encode(notenameRemove)); // mengirim notename ke server
                 kirimanServer = inFromServer.readLine(); // menerima kiriman server
-                service.buatGaris(60);
+                service.buatGaris(panjangGaris);
                 System.out.println(service.decode(kirimanServer));
                 continue;
             }
 
-            service.buatGaris(60);
+            service.buatGaris(panjangGaris);
             outToServer.writeBytes(sentence + '\n'); 
             kirimanServer = inFromServer.readLine();
             System.out.println(service.decode(kirimanServer));
         } while(!sentence.toLowerCase().equals("/exit")); 
  
-        service.buatGaris(60);
+        service.buatGaris(panjangGaris);
         clientSocket.close();
         scan.close();
     } 
