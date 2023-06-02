@@ -166,32 +166,32 @@ public class TCPClient {
                 continue;
             }
 
-            else if (sentence.equals("/send")) {
-                service.buatGaris(panjangGaris);
-                System.out.print("Masukkan path     : ");
-                System.out.flush();
-                String path = scan.nextLine();
-                outToServer.writeBytes(sentence + '\n');
-                int length = path.split("\\\\").length;
-                outToServer.writeBytes(service.encode(path.split("\\\\")[length - 1])); 
-                service.kirimFile(path, clientSocket);
-                clientSocket = new Socket(); // Membuka kembali socket
-                clientSocket.connect(socketAddr, 2000); // Menyambungkan kembali ke server
-                outToServer = new DataOutputStream(clientSocket.getOutputStream());
-                inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                // outToServer.writeBytes(service.encode(path)); // mengirim path ke server
-                // kirimanServer = inFromServer.readLine(); // menerima kiriman server
-                service.buatGaris(panjangGaris);
-                // System.out.println(service.decode(kirimanServer));
-                outToServer.writeBytes(service.encode(username));
-                if (service.decode(inFromServer.readLine()).trim().equals("true")) {
-                    outToServer.writeBytes(service.encode(password));
-                    TCPClientService.clearScreen(); 
-                }
+            // else if (sentence.equals("/send")) {
+            //     service.buatGaris(panjangGaris);
+            //     System.out.print("Masukkan path     : ");
+            //     System.out.flush();
+            //     String path = scan.nextLine();
+            //     outToServer.writeBytes(sentence + '\n');
+            //     int length = path.split("\\\\").length;
+            //     outToServer.writeBytes(service.encode(path.split("\\\\")[length - 1])); 
+            //     service.kirimFile(path, clientSocket);
+            //     clientSocket = new Socket(); // Membuka kembali socket
+            //     clientSocket.connect(socketAddr, 2000); // Menyambungkan kembali ke server
+            //     outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            //     inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            //     // outToServer.writeBytes(service.encode(path)); // mengirim path ke server
+            //     // kirimanServer = inFromServer.readLine(); // menerima kiriman server
+            //     service.buatGaris(panjangGaris);
+            //     // System.out.println(service.decode(kirimanServer));
+            //     outToServer.writeBytes(service.encode(username));
+            //     if (service.decode(inFromServer.readLine()).trim().equals("true")) {
+            //         outToServer.writeBytes(service.encode(password));
+            //         TCPClientService.clearScreen(); 
+            //     }
 
-                service.buatGaris(panjangGaris);
-                continue;
-            }
+            //     service.buatGaris(panjangGaris);
+            //     continue;
+            // }
 
             service.buatGaris(panjangGaris);
             outToServer.writeBytes(sentence + '\n'); 

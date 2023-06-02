@@ -1,10 +1,7 @@
 package gabrielhtg.service;
 
 import java.io.Console;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.util.Base64;
 
 public class TCPClientService{
@@ -88,28 +85,28 @@ public class TCPClientService{
         return password;
     }
 
-    public void kirimFile (String path, Socket socket) {
-        // int serverPort = 5000;
+    // public void kirimFile (String path, Socket socket) {
+    //     // int serverPort = 5000;
 
-        try {
-            // Socket socket = new Socket(ip, serverPort);
-            FileInputStream fileInputStream = new FileInputStream(path);
-            OutputStream outputStream = socket.getOutputStream();
-            // Baca file menjadi byte array
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                // Kirim byte array ke sisi penerima
-                outputStream.write(buffer, 0, bytesRead);
-            }
-            fileInputStream.close();
-            outputStream.close();
-            outputStream.flush();
-            System.out.println("File berhasil dikirim");
-            socket.close();
+    //     try {
+    //         // Socket socket = new Socket(ip, serverPort);
+    //         FileInputStream fileInputStream = new FileInputStream(path);
+    //         OutputStream outputStream = socket.getOutputStream();
+    //         // Baca file menjadi byte array
+    //         byte[] buffer = new byte[8192];
+    //         int bytesRead;
+    //         while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+    //             // Kirim byte array ke sisi penerima
+    //             outputStream.write(buffer, 0, bytesRead);
+    //         }
+    //         fileInputStream.close();
+    //         outputStream.close();
+    //         outputStream.flush();
+    //         System.out.println("File berhasil dikirim");
+    //         socket.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 }
