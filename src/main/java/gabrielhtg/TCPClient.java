@@ -44,9 +44,16 @@ public class TCPClient {
                 String persetujuan = scan.nextLine();
 
                 if (persetujuan.toLowerCase().equals("y")) {
-                    System.out.print("Masukkan password baru : ");
+                    Console console = System.console();
+                    if (console == null) {
+                        System.out.println("Tidak dapat mengambil konsol. Jalankan program di luar IDE.");
+                        System.exit(1);
+                    }
+
+                    char[] passwordArray = console.readPassword("Masukkan password baru : ");
+                    String newPassword = new String(passwordArray);
+                    java.util.Arrays.fill(passwordArray, ' ');
                     System.out.flush();
-                    String newPassword = scan.nextLine();
                     outToServer.writeBytes(service.encode(newPassword));
                     service.buatGaris(60);
 
