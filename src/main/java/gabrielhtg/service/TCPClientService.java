@@ -88,7 +88,7 @@ public class TCPClientService{
         return password;
     }
 
-    public void kirimFile (String ip, String path, Socket socket) {
+    public void kirimFile (String path, Socket socket) {
         // int serverPort = 5000;
 
         try {

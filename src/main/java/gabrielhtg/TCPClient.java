@@ -17,6 +17,9 @@ public class TCPClient {
         Socket clientSocket = new Socket(); 
         DataOutputStream outToServer = null; 
         BufferedReader inFromServer = null; 
+        String username = "";
+        String password = "";
+        String passwordSatu = "";
         int panjangGaris = 80;
 
         service.buatGaris(panjangGaris);
@@ -31,7 +34,7 @@ public class TCPClient {
             outToServer = new DataOutputStream(clientSocket.getOutputStream()); 
             inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); 
             System.out.print("Masukkan username   : ");
-            String username = scan.nextLine();
+            username = scan.nextLine();
             outToServer.writeBytes(service.encode(username));
             
             if (service.decode(inFromServer.readLine()).trim().equals("false")) {
@@ -43,7 +46,7 @@ public class TCPClient {
                 String persetujuan = scan.nextLine();
 
                 if (persetujuan.toLowerCase().equals("y")) {
-                    String passwordSatu = "";
+                    
                     while (true) {
                         passwordSatu = service.mintaPw("Masukkan password baru : ");
                         String passwordDua = service.mintaPw("Masukkan password lagi : ");
@@ -84,7 +87,8 @@ public class TCPClient {
 
             else {
                 while (true) {
-                    outToServer.writeBytes(service.encode(service.mintaPw("Masukkan password   : ")));
+                    password = service.mintaPw("Masukkan password   : ");
+                    outToServer.writeBytes(service.encode(password));
     
                     if (service.decode(inFromServer.readLine()).equals("false")) { // kredensial tidak tepat
                         continue;
@@ -171,21 +175,29 @@ public class TCPClient {
                 outToServer.writeBytes(sentence + '\n');
                 int length = path.split("\\\\").length;
                 outToServer.writeBytes(service.encode(path.split("\\\\")[length - 1])); 
-                // Membuat objek Thread dan menyediakan method yang akan dijalankan
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Kode yang ingin dijalankan di thread baru
-                        service.kirimFile(ipServer, path, clientSocket);
-                    }
-                });
-
-                // Memulai eksekusi thread
-                thread.start();
+                service.kirimFile(path, clientSocket);
+                clientSocket = new Socket(); // Membuka kembali socket
+                clientSocket.connect(socketAddr, 2000); // Menyambungkan kembali ke server
+                outToServer = new DataOutputStream(clientSocket.getOutputStream());
+                inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 // outToServer.writeBytes(service.encode(path)); // mengirim path ke server
                 // kirimanServer = inFromServer.readLine(); // menerima kiriman server
                 service.buatGaris(panjangGaris);
                 // System.out.println(service.decode(kirimanServer));
+                outToServer.writeBytes(service.encode(username));
+                if (service.decode(inFromServer.readLine()).trim().equals("true")) {
+                    outToServer.writeBytes(service.encode(password));
+    
+                    if (service.decode(inFromServer.readLine()).equals("false")) { // kredensial tidak tepat
+                        continue;
+                    }
+
+                    else {
+                        TCPClientService.clearScreen();
+                    }
+                }
+
+                service.buatGaris(panjangGaris);
                 continue;
             }
 
