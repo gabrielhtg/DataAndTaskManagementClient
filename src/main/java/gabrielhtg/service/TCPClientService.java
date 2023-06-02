@@ -102,6 +102,7 @@ public class TCPClientService{
             outputStream.flush();
             System.out.println("File berhasil dikirim");
             fileInputStream.close();
+            socket.close();
 
         } catch (IOException e) {
             e.printStackTrace();
