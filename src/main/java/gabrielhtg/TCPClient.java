@@ -121,11 +121,10 @@ public class TCPClient {
         } 
  
         System.out.println("Tuliskan \"/exit\" untuk berhenti !!"); 
+        service.buatGaris(panjangGaris);
 
         do { 
-            service.buatGaris(panjangGaris);
             System.out.print("Input : ");
-             
             System.out.flush();
             sentence = scan.nextLine(); 
 
@@ -187,14 +186,7 @@ public class TCPClient {
                 outToServer.writeBytes(service.encode(username));
                 if (service.decode(inFromServer.readLine()).trim().equals("true")) {
                     outToServer.writeBytes(service.encode(password));
-    
-                    if (service.decode(inFromServer.readLine()).equals("false")) { // kredensial tidak tepat
-                        continue;
-                    }
-
-                    else {
-                        TCPClientService.clearScreen(); 
-                    }
+                    TCPClientService.clearScreen(); 
                 }
 
                 service.buatGaris(panjangGaris);
